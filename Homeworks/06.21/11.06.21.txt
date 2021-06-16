@@ -13,3 +13,5 @@ Add code to counts the number of elements in each of arrays that are greater
 than a specified element.
 
 3)  функциональные интерфейсы (new)
+
+4) коллекции (new)
