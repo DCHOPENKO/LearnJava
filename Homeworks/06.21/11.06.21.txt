@@ -1,0 +1,15 @@
+1) Add git in project
+
+2) Generics
+
+a) task in skype
+
+b) Create class MyTestMethod with generic static method calcNum (with two parameters: an array T[] and
+variable maxElem of type T) that counts the number of elements in
+an array T[] that are greater than a specified element maxElem.    4 3 4 2 23 5, 10
+
+c) Create a generic class ArrayWorker with generic array field for working Integer and Double
+Add code to counts the number of elements in each of arrays that are greater
+than a specified element.
+
+3)  функциональные интерфейсы (new)

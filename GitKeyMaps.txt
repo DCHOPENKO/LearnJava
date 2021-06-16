@@ -1,0 +1,36 @@
+git init
+
+git add .
+git add readme.txt
+
+git commit m ""
+git comint am ""
+
+git status
+git diff
+
+git checkout --   OR  git restore
+git reset HEAD   OR
+
+
+
+git log            -> выводит все коммиты
+git log -2         -> выводит фикс кол-во коммитов
+git log -2 -p      -> выводит детальную инф. по измеенниям в коммитах
+git log -2 --stat  ->  выводит кол-во изменённых файлов и количество строк добавленыых и удаленных
+git log --pretty=oneline
+
+unlink
+
+
+git branch
+git branch branchName
+git branch -D branchName
+git checkout branchName
+git checkout -b branchName
+git checkout -m  existbranchName newBranchName
+
+git stash save "Message" - save changes to stash
+git stash list - show all stashes
+git stash apply stash@{number} - apply stash with given hash
+git stash clear - delete all stashes

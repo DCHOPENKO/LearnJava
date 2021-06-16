@@ -1,0 +1,8 @@
+1) stashing
+2) Reflection:
+print:
+- class name(with package)
+- parent
+- interfaces
+- type of fields
+- name of fields

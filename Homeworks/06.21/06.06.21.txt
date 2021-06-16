@@ -1,0 +1,49 @@
+1. Regex
+
+a) Любое количество букв, а потом две цифры и наоборот.
+b) 2-4 цифры, а потом 2-4 буквы и наоборот.
+c) Пользователь вводит имя и фамилию.
+Буквы могут быть в разных регистрах. Проверить, чтобы первые буквы были в верхнем регистре,
+ а остальные буквы - в нижнем.
+
+d) Пользователь вводит телефон в формате (ххх)ххх-хх-хх.
+(ххх) должен быть таким: (095), (097), (073), (067), (099), (063).
+Проверить, чтобы 7 - ый номер был в формате "(ххх)ххх-хх-хх".
+Если пользователь вводит номер начинающийся на(095) или (099) ххх-хх-хх, выводить в консоль
+ "Пользователь имеет МТС номер",
+на(097) или (067) ххх-хх-хх, выводить в консоль "Пользователь имеет Киевстар номер",
+на(073) или (063) ххх-хх-хх, выводить в консоль "Пользователь имеет Лайф номер".
+
+e)  The input data should be uploaded from the 'part3.txt' file
+         ———————————————————————————————-
+         The file contains characters, whole numbers and floating point numbers.
+         Write a class that has the following functionality: in a loop, a user enters the data type
+          (one of them: char, int, double, String),
+         in response, the application prints out to the console all the values of the corresponding types
+          that exist in the file.
+         If a user enters the word 'stop', then the application exits the loop. In other cases "Incorrect input"
+          should be printed.
+         Resolve the task using regular expressions.
+         <p>
+         Note: A 'String' should be considered a sequence of two and more characters.
+         Characters - Latin or Cyrillic letters letters in upper or lower case (make sure to envisage that Cyrillic
+          letters may be in the input file).
+
+         Example of the original file:
+         ————————————————————————-
+         a bcd 43.43 432 и л фвыа 89.98
+
+f) В строке содержутся слова и числа. Необходмо выделить числа и посчитать их сумму.
+
+2) Создать private методы, возвращающих случ. числа и сделать аналогичные операции, использовав PowerMock.
+   Создать public static методы, возвращающих случ. числа и сделать аналогичные операции.PowerMock
+3) Recoursion
+
+   a) task in image (in skype)
+
+   b) Дано 4-х значне число (1985) знайти в числі найбільше непарне число вивести його на консоль і
+   порахувати кількість одиниць в числі.
+   Якщо в числі немає одиниць то вивести на консоль-"Одиниць немає!!! ".
+
+   c) Дано послідовність.int array={14,3,4,5,5,6,6,7,6,7,6};
+   Перевірити чи послідовність зростаюча.

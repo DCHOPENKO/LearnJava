@@ -1,0 +1,5 @@
+1) Test in archives    // test        //   exclude exceptions
+2) vehicles            // new         //   not started
+3) file manager        // new         //   not started
+4) Cover by unit tests  ImitationList
+5) Speech refactor

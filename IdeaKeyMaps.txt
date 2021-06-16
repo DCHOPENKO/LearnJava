@@ -1,0 +1,7 @@
+ctrl + alt + l - format code
+ctrl + d - duplication code
+ctrl + shift + F10 - run psvm
+alt + insert - create file, dir, constructor, setter/getter
+shift + F6 - rename
+ctrl + shift + / - manyline commnet
+ctrl + / - oneline commnet

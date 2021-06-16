@@ -1,0 +1,7 @@
+1) Speech              // refactoring //   done
+2)imitation list       // refactoring //   done
+3)speeddating          // refactoring //   done
+4) Test in archives    // test        //   exclude exceptions
+5) Найти ошибку файл   // test        //   done
+6) vehicles            // new         //   not started
+7) file manager        // new         //   not started
