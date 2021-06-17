@@ -18,8 +18,8 @@ public class GenericTasks {
         ArrayWorker<Integer> workerArrayInteger = new ArrayWorker<>(arrayInt);
         ArrayWorker<Double> workerArrayDouble = new ArrayWorker<>(arrayDouble);
 
-        System.out.println(workerArrayInteger.calcSum(2));
-        System.out.println(workerArrayDouble.calcSum(5.4));
+        System.out.println(workerArrayInteger.calcaulateSum(2));
+        System.out.println(workerArrayDouble.calcaulateSum(5.4));
         System.out.println(workerArrayInteger.calcSumSimple(2));
         System.out.println(workerArrayDouble.calcSumSimple(5.4));
     }
@@ -81,14 +81,14 @@ public class GenericTasks {
             this.array = array;
         }
 
-        public int calcSum(T t) {
-            int counter = 0;
+        public int calcaulateSum(T t) {
+            int sum = 0;
             for (T value : array) {
                 if (value.doubleValue() > t.doubleValue()) {
-                    counter++;
+                    sum++;
                 }
             }
-            return counter;
+            return sum;
         }
 
         public int calcSumSimple(T t) {
