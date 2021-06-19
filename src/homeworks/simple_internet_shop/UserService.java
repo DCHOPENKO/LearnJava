@@ -1,4 +1,4 @@
 package homeworks.simple_internet_shop;
 
-public class ShopFrontend {
+public class UserService {
 }

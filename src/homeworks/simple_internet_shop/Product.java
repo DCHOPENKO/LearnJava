@@ -16,7 +16,6 @@ public class Product {
     private int year;
     private double price;
     private int qty;
-    private List<Product> companionProducts;
 
     public Product(String typeName, String modelName, String brandName, int year, double price, int qty) {
         this.typeName = typeName;
@@ -25,10 +24,11 @@ public class Product {
         this.year = year;
         this.price = price;
         this.qty = qty;
-        companionProducts = new LinkedList<>();
     }
 
-    public void addCompanionProduct (Product product) {
-        companionProducts.add(product);
-    }
 }
+
+/*
+* Mouse - Category(Computer), sub - Pereferiya
+* Computer - Category(Computer), sub - Computer
+* */
