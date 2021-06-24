@@ -5,7 +5,6 @@ import java.util.List;
 
 public class PriceExplorer {
     private List<ProductInstance> list;
-    private static int index = 0;
 
     PriceExplorer (List<ProductInstance> list) {
         this.list = list;

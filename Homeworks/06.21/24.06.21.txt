@@ -1,0 +1,2 @@
+1)  интернет магазин refactor
+2) Product table via Map

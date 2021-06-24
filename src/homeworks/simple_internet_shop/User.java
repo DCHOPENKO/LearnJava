@@ -1,7 +1,7 @@
 package homeworks.simple_internet_shop;
 
 public class User {
-    ShoppingCart shoppingCart;
+    private ShoppingCart shoppingCart;
     private String firstName;
     private String lastName;
     private String password;
@@ -21,4 +21,11 @@ public class User {
         return lastName;
     }
 
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void addProductCart(Product product, int qty) {
+        shoppingCart.addToCart(product, qty);
+    }
 }

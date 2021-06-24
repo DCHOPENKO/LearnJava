@@ -1,20 +1,22 @@
 package homeworks.simple_internet_shop;
 
+import java.time.Year;
 import java.util.Objects;
 
 public class Product {
 
     private static int globalId = 778432;
     private Category category;
-    private String subCategory;
+    private String subCategory;//enum
     private String modelName;
     private String brandName;
-    private int year;
+    private int year;//
+    private Year year1;//
     private double price;
     private int qtyOnWH;
-    private int ProductId;
+    private int productId;
     private int qtyInCart;
-    private double cartPrice;
+    private double priceInCart;
 
     private Product() {
     }
@@ -28,7 +30,7 @@ public class Product {
         this.year = year;
         this.price = price;
         this.qtyOnWH = qty;
-        ProductId = globalId++;
+        productId = globalId++;
     }
 
     public static Product buildWithCategoryAndModel(Category category, String modelName) {
@@ -44,12 +46,12 @@ public class Product {
         return product;
     }
 
-    public double getCartPrice() {
-        return cartPrice;
+    public double getPriceInCart() {
+        return priceInCart;
     }
 
-    public void setCartPrice(double cartPrice) {
-        this.cartPrice = cartPrice;
+    public void setPriceInCart(double priceInCart) {
+        this.priceInCart = priceInCart;
     }
 
     public Category getCategory() {
@@ -77,7 +79,7 @@ public class Product {
     }
 
     public int getProductId() {
-        return ProductId;
+        return productId;
     }
 
     public int getQtyInCart() {
@@ -90,7 +92,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "ProductID --> " + ProductId + "; Category --> " + category.toString() +
+        return "ProductID --> " + productId + "; Category --> " + category.toString() +
                 "; SubCategory --> " + subCategory + "; BrandName --> " + brandName + "; ModelName --> " + modelName +
                 "; Year --> " + year + "; Price --> " + price + "; Qty --> " + qtyOnWH;
     }

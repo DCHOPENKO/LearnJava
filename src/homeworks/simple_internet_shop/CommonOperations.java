@@ -3,11 +3,11 @@ package homeworks.simple_internet_shop;
 import java.util.HashSet;
 import java.util.Set;
 
-public interface CommonOperationsWithProduct {
+public interface CommonOperations {
     Product EMPTY_PRODUCT = new Product(Category.UNCLASSIFIED,
             "", "", "", 0, 0, 0);
 
-    default Product getByParams(Product product, Set<Product> list) {
+    default Product getProductByParams(Product product, Set<Product> list) {
         for (Product instance : list) {
             if (instance.getCategory().equals(product.getCategory())
                     && instance.getModelName().equals(product.getModelName())
@@ -18,7 +18,7 @@ public interface CommonOperationsWithProduct {
         return EMPTY_PRODUCT;
     }
 
-    default boolean isProductInList(Product product) {
+    default boolean existsProduct(Product product) {
         if (product.getCategory().equals(Category.UNCLASSIFIED)) {
             System.out.println("No such product in list");
             return false;
@@ -27,15 +27,15 @@ public interface CommonOperationsWithProduct {
     }
 
     default void removeProductFromList(Product product, Set<Product> list) {
-        product = getByParams(product, list);
-        if (!isProductInList(product)) {
+        product = getProductByParams(product, list);
+        if (!existsProduct(product)) {
             return;
         }
         list.remove(product);
     }
 
     default void removeProductWithCompanionsFromList(Product product, Set<Product> list) {
-        if (!isProductInList(product)) {
+        if (!existsProduct(product)) {
             return;
         }
         list.removeAll(getCompanionProductList(product, list));
@@ -43,7 +43,7 @@ public interface CommonOperationsWithProduct {
     }
 
     default Set<Product> getCompanionProductList(Product product, Set<Product> list) {
-        product = getByParams(product, list);
+        product = getProductByParams(product, list);
         Set<Product> companionList = new HashSet<>();
         for (Product instance : list) {
             if (instance.getCategory().equals(product.getCategory())

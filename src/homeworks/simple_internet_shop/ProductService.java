@@ -3,14 +3,14 @@ package homeworks.simple_internet_shop;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProductService implements CommonOperationsWithProduct {
+public class ProductService implements CommonOperations {
     private Set<Product> productList;
 
     public ProductService() {
         productList = new HashSet<>();
     }
 
-    public void addProductToList(Product product) {
+    public void addProduct(Product product) {
         productList.add(product);
     }
 
@@ -23,7 +23,7 @@ public class ProductService implements CommonOperationsWithProduct {
     }
 
     public Product getByParams(Product product) {
-        Product instance = getByParams(product, productList);
+        Product instance = getProductByParams(product, productList);
         return instance;
     }
 

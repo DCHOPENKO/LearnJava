@@ -4,9 +4,8 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ShoppingCart implements CommonOperationsWithProduct {
-    Set<Product> shoppingCart;
-    private double totalPrice;
+public class ShoppingCart implements CommonOperations {
+    private Set<Product> shoppingCart;
 
     ShoppingCart() {
 
@@ -14,7 +13,7 @@ public class ShoppingCart implements CommonOperationsWithProduct {
     }
 
     public void addToCart(Product product, int qty) {
-        if (!isProductInList(product)) {
+        if (!existsProduct(product)) {
             return;
         }
         if (qty > product.getQtyOnWH() || qty <= 0) {
@@ -43,7 +42,7 @@ public class ShoppingCart implements CommonOperationsWithProduct {
 
     public void changeQtyValue(Product product, int newQty) {
         product = getByParams(product);
-        if (!isProductInList(product)) {
+        if (!existsProduct(product)) {
             return;
         }
         if (newQty > product.getQtyOnWH() || newQty <= 0) {
@@ -57,19 +56,21 @@ public class ShoppingCart implements CommonOperationsWithProduct {
     }
 
     public Product getByParams(Product product) {
-        return getByParams(product, shoppingCart);
+        return getProductByParams(product, shoppingCart);
     }
 
     public double calculateTotalPrice() {
-        totalPrice = 0;
+        double totalPrice = 0;
         for (Product product : shoppingCart) {
-            totalPrice += product.getCartPrice();
+            totalPrice += product.getPriceInCart();
         }
         return totalPrice;
     }
 
     public void calculateProductPriceInCart(Product product) {
-        product.setCartPrice(product.getPrice() * product.getQtyInCart());
+        product.setPriceInCart(product.getPrice() * product.getQtyInCart());
+
+//        CalculateCart cart = set -> {};
     }
 
     private String getWarningMessage(Product product) {
@@ -89,11 +90,16 @@ public class ShoppingCart implements CommonOperationsWithProduct {
                     .append(product.getBrandName()).append("; ModelName --> ").append(product.getModelName())
                     .append("; Unit Price --> ").append(product.getPrice()).append("; Qty in Cart --> ")
                     .append(product.getQtyInCart()).append("; Total Price --> ")
-                    .append(product.getCartPrice()).append("\n");
+                    .append(product.getPriceInCart()).append("\n");
         }
         result.append("----------------------------------------------------------------------------------------- \n")
                 .append("                                                                 Grand Total Price -->")
                 .append(BigDecimal.valueOf(calculateTotalPrice()).setScale(2, BigDecimal.ROUND_CEILING));
         return result.toString();
     }
+}
+
+@FunctionalInterface
+interface CalculateCart {
+    BigDecimal calculate(Set<Product> products);
 }
