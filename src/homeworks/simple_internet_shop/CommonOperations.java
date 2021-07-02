@@ -1,14 +1,15 @@
 package homeworks.simple_internet_shop;
 
+import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
 public interface CommonOperations {
     Product EMPTY_PRODUCT = new Product(Category.UNCLASSIFIED,
-            "", "", "", 0, 0, 0);
+            "", "", "", Year.of(0), 0, 0);
 
-    default Product getProductByParams(Product product, Set<Product> list) {
-        for (Product instance : list) {
+    default Product getProductByParams(Product product, Set<Product> set) {
+        for (Product instance : set) {
             if (instance.getCategory().equals(product.getCategory())
                     && instance.getModelName().equals(product.getModelName())
                     && instance.getBrandName().equals(product.getBrandName())) {
@@ -26,31 +27,15 @@ public interface CommonOperations {
         return true;
     }
 
-    default void removeProductFromList(Product product, Set<Product> list) {
-        product = getProductByParams(product, list);
-        if (!existsProduct(product)) {
-            return;
-        }
-        list.remove(product);
-    }
-
-    default void removeProductWithCompanionsFromList(Product product, Set<Product> list) {
-        if (!existsProduct(product)) {
-            return;
-        }
-        list.removeAll(getCompanionProductList(product, list));
-        removeProductFromList(product, list);
-    }
-
-    default Set<Product> getCompanionProductList(Product product, Set<Product> list) {
-        product = getProductByParams(product, list);
-        Set<Product> companionList = new HashSet<>();
-        for (Product instance : list) {
+    default Set<Product> getCompanionProductSet(Product product, Set<Product> set) {
+        product = getProductByParams(product, set);
+        Set<Product> companionsSet = new HashSet<>();
+        for (Product instance : set) {
             if (instance.getCategory().equals(product.getCategory())
                     && !instance.getSubCategory().equals(product.getSubCategory())) {
-                companionList.add(instance);
+                companionsSet.add(instance);
             }
         }
-        return companionList;
+        return companionsSet;
     }
 }

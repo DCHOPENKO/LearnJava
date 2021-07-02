@@ -4,45 +4,50 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ProductService implements CommonOperations {
-    private Set<Product> productList;
+    private Set<Product> productSet;
 
     public ProductService() {
-        productList = new HashSet<>();
+        productSet = new HashSet<>();
     }
 
     public void addProduct(Product product) {
-        productList.add(product);
+        productSet.add(product);
     }
 
-    public void removeProductFromList(Product product) {
-        removeProductFromList(product, productList);
+    public void removeProduct(Product product) {
+        product = getProductByParams(product, productSet);
+        if (!existsProduct(product)) {
+            return;
+        }
+        productSet.remove(product);
     }
 
-    public void removeProductWithCompanionsFromList(Product product) {
-        removeProductWithCompanionsFromList(product, productList);
+    public void removeProductWithCompanions(Product product) {
+        productSet.removeAll(getCompanionProducts(product));
+        removeProduct(product);
     }
 
-    public Product getByParams(Product product) {
-        Product instance = getProductByParams(product, productList);
+    public Product getProductByParams(Product product) {
+        Product instance = getProductByParams(product, productSet);
         return instance;
     }
 
-    public Set<Product> getCompanionProductList(Product product) {
-        return getCompanionProductList(product, productList);
+    public Set<Product> getCompanionProducts(Product product) {
+        return getCompanionProductSet(product, productSet);
     }
 
-    public void printCustomList(Set<Product> customList) {
-        for (Product instance : customList) {
+    public void printCustomSet(Set<Product> set) {
+        for (Product instance : set) {
             System.out.println(instance);
         }
     }
 
-    public void printFullProductList() {
-        printCustomList(productList);
+    public void printFullProductSet() {
+        printCustomSet(productSet);
     }
 
-    public void printCompanionProductList(Product product) {
-        printCustomList(getCompanionProductList(product));
+    public void printCompanionProductsSet(Product product) {
+        printCustomSet(getCompanionProducts(product));
     }
 
 }

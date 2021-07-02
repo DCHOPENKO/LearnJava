@@ -13,10 +13,6 @@ public enum Category {
         this.shortName = shortName;
     }
 
-    public String getShortName() {
-        return shortName;
-    }
-
     @Override
     public String toString() {
         return shortName;

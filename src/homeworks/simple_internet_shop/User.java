@@ -25,7 +25,4 @@ public class User {
         return shoppingCart;
     }
 
-    public void addProductCart(Product product, int qty) {
-        shoppingCart.addToCart(product, qty);
-    }
 }

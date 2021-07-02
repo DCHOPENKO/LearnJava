@@ -1,12 +1,11 @@
 package homeworks.simple_internet_shop;
 
+import java.time.Year;
 import java.util.Set;
 
 public class Shop {
-    private static final Product HONOR_10 = Product.buildWithCategoryAndModelAndBrand(
-            Category.PHONES, "Honor 10", "Huawei");
-    private static final Product TV_SAMSUNG = Product.buildWithCategoryAndModelAndBrand(Category.TVS,
-            "ML12VGT65", "Samsung");
+    private static final Product HONOR_10 = new Product(Category.PHONES, "Honor 10", "Huawei");
+    private static final Product TV_SAMSUNG = new Product(Category.TVS, "ML12VGT65", "Samsung");
     private static ProductService productList = new ProductService();
 
     public static void main(String[] args) {
@@ -15,18 +14,18 @@ public class Shop {
         System.out.println("1) добавление товара(название, производитель, дата производства и т.д.).\n" +
                 "2) добавление сопутствующих товаров.");
         addProductsToShopList();
-        productList.printFullProductList();
+        productList.printFullProductSet();
 
         //        3) удаление товара без сопутствующих товаров.
         System.out.println("03.1 удаление товара без сопутствующих товаров.");
         printFullProductListWithTextBloc("Before");
-        productList.removeProductFromList(TV_SAMSUNG);
+        productList.removeProduct(TV_SAMSUNG);
         printFullProductListWithTextBloc("After");
 
 //        3) удаление товара c сопутствующими товарами.
         System.out.println("03.2 удаление товара с сопутствующими товарами.");
         printFullProductListWithTextBloc("Before");
-        productList.removeProductWithCompanionsFromList(HONOR_10);
+        productList.removeProductWithCompanions(HONOR_10);
         printFullProductListWithTextBloc("After");
 
         addProductsToShopList();
@@ -35,10 +34,6 @@ public class Shop {
         User userVasya = new User("Vasya", "Pupkin", "password");
         User userPetya = new User("John", "Smith", "password");
         addProductToUserCart(userVasya, TV_SAMSUNG, 7);
-
-        Product product = productList.getByParams(TV_SAMSUNG);
-
-        userVasya.addProductCart(product, 7);
 
         addProductToUserCart(userVasya, TV_SAMSUNG, 4);
 
@@ -51,7 +46,7 @@ public class Shop {
         System.out.println("05. выбор товара по определенным критериям и после выводить сопутствующие товары \n" +
                 " для продукта --> " + HONOR_10.getModelName());
 
-        productList.printCompanionProductList(HONOR_10);
+        productList.printCompanionProductsSet(HONOR_10);
 
 //     6)  удаление элементов из корзины
         System.out.println("6.1  удаление продукта из корзины");
@@ -86,20 +81,20 @@ public class Shop {
 
     public static void addProductsToShopList() {
         productList.addProduct(new Product(Category.PHONES, "Mobile_Phones", "Honor 10",
-                "Huawei", 2016, 600, 6));
+                "Huawei", Year.of(2019), 600, 6));
         productList.addProduct(new Product(Category.PHONES, "Accessories", "phone Case",
-                "RiK", 2019, 10, 56));
+                "RiK", Year.of(2019), 10, 56));
         productList.addProduct(new Product(Category.PHONES, "Earphones", "Honor AM 176",
-                "Huawei", 2018, 50, 4));
+                "Huawei", Year.of(2018), 50, 4));
         productList.addProduct(new Product(Category.PHONES, "Mobile_Phones", "Iphone 12",
-                "Apple", 2020, 1100, 12));
+                "Apple", Year.of(2020), 1100, 12));
         productList.addProduct(new Product(Category.TVS, "TV", "ML12VGT65",
-                "Samsung", 2020, 3000, 5));
+                "Samsung", Year.of(2020), 3000, 5));
     }
 
     public static void printFullProductListWithTextBloc(String text) {
         System.out.println(text);
-        productList.printFullProductList();
+        productList.printFullProductSet();
     }
 
     public static void printUserShoppingCart(User user) {
@@ -108,24 +103,24 @@ public class Shop {
     }
 
     public static void addProductToUserCart(User user, Product product, int qty) {
-        user.getShoppingCart().addToCart(productList.getByParams(product), qty);
+        user.getShoppingCart().addProduct(productList.getProductByParams(product), qty);
     }
 
     public static void addProductWithCompanionsToUserCart(User user, Product product, int qty) {
-        Product params = productList.getByParams(product);
-        Set<Product> productSet = productList.getCompanionProductList(product);
-        user.getShoppingCart().addToCartWithCompanions(params, qty, productSet);
+        Product params = productList.getProductByParams(product);
+        Set<Product> productSet = productList.getCompanionProducts(product);
+        user.getShoppingCart().addWithCompanionProducts(params, qty, productSet);
     }
 
     public static void removeProductFromUserCart(User user, Product product) {
-        user.getShoppingCart().removeProductFromCart(product);
+        user.getShoppingCart().removeProduct(product);
     }
 
     public static void removeProductWithCompanionsFromUserCart(User user, Product product) {
-        user.getShoppingCart().removeWithCompanionsfromCart(product);
+        user.getShoppingCart().removeWithCompanionProducts(product);
     }
 
     public static void changeProductQtyInUserCart(User user, Product product, int newQty) {
-        user.getShoppingCart().changeQtyValue(productList.getByParams(product), newQty);
+        user.getShoppingCart().changeQuantity(productList.getProductByParams(product), newQty);
     }
 }

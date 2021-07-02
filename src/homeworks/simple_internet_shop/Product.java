@@ -1,57 +1,39 @@
 package homeworks.simple_internet_shop;
 
+import java.math.BigDecimal;
 import java.time.Year;
 import java.util.Objects;
 
 public class Product {
 
-    private static int globalId = 778432;
     private Category category;
-    private String subCategory;//enum
+    private String subCategory;
     private String modelName;
     private String brandName;
-    private int year;//
-    private Year year1;//
-    private double price;
-    private int qtyOnWH;
-    private int productId;
-    private int qtyInCart;
-    private double priceInCart;
-
-    private Product() {
-    }
+    private Year year;//
+    private BigDecimal price;
+    private int quantityOnWH;
 
     public Product(Category category, String subCategory, String modelName, String brandName,
-                   int year, double price, int qty) {
+                   Year year, double price, int quantity) {
         this.category = category;
         this.subCategory = subCategory;
         this.modelName = modelName;
         this.brandName = brandName;
         this.year = year;
-        this.price = price;
-        this.qtyOnWH = qty;
-        productId = globalId++;
+        this.price = BigDecimal.valueOf(price);
+        this.quantityOnWH = quantity;
     }
 
-    public static Product buildWithCategoryAndModel(Category category, String modelName) {
-        Product product = new Product();
-        product.category = category;
-        product.modelName = modelName;
-        return product;
+    public Product(Category category, String modelName) {
+        this.category = category;
+        this.modelName = modelName;
     }
 
-    public static Product buildWithCategoryAndModelAndBrand(Category category, String modelName, String brandName) {
-        Product product = buildWithCategoryAndModel(category, modelName);
-        product.brandName = brandName;
-        return product;
-    }
-
-    public double getPriceInCart() {
-        return priceInCart;
-    }
-
-    public void setPriceInCart(double priceInCart) {
-        this.priceInCart = priceInCart;
+    public Product(Category category, String modelName, String brandName) {
+        this.category = category;
+        this.modelName = modelName;
+        this.brandName = brandName;
     }
 
     public Category getCategory() {
@@ -70,31 +52,19 @@ public class Product {
         return brandName;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public int getQtyOnWH() {
-        return qtyOnWH;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public int getQtyInCart() {
-        return qtyInCart;
-    }
-
-    public void setQtyInCart(int qtyInCart) {
-        this.qtyInCart = qtyInCart;
+    public int getQuantityOnWH() {
+        return quantityOnWH;
     }
 
     @Override
     public String toString() {
-        return "ProductID --> " + productId + "; Category --> " + category.toString() +
-                "; SubCategory --> " + subCategory + "; BrandName --> " + brandName + "; ModelName --> " + modelName +
-                "; Year --> " + year + "; Price --> " + price + "; Qty --> " + qtyOnWH;
+        return "Category --> " + category + "; SubCategory --> " + subCategory + "; BrandName --> " + brandName +
+                "; ModelName --> " + modelName + "; Year --> " + year + "; Price --> " +
+                price.setScale(2, BigDecimal.ROUND_CEILING) + "; Qty --> " + quantityOnWH;
     }
 
     @Override

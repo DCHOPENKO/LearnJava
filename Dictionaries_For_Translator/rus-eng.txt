@@ -1,0 +1,4 @@
+вечер:evening
+привет:hello
+утро:morning
+собака:dog
