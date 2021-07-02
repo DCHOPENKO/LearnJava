@@ -1,5 +1,6 @@
 package homeworks.translator;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -9,13 +10,7 @@ public class Main {
 
         DataExport data = new DataExport();
         Translator translator = new Translator();
-
-        Path rootPath = DataExport.getPath("D:\\temp\\LearnJava\\Dictionaries_For_Translator");
-
-/*       Object[] obj = Files.list(rootPath).toArray();
-        for (Object o: obj) {
-            System.out.println(o);
-        }*/
+        Path rootPath = DataExport.getPath("Dictionaries_For_Translator");
 
         translator.setDictionaries(data.importAll(rootPath));
 

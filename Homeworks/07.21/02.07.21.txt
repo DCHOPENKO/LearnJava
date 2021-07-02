@@ -1,0 +1,4 @@
+1) Coder(decoder)
+2) Translator, refactor
+3) Optional
+

@@ -11,13 +11,16 @@ public class RepeatedWords {
         String text = "hello world hello bro g h hello bro";
         List<String> words = Arrays.asList(text.split("\\s"));
         Map<String, Integer> quantityRepeatedWords = new HashMap<>();
-        for (String word : words) {
+
+     /*   for (String word : words) {
             quantityRepeatedWords.put(word, getRepeatedTimes(word, words));
         }
 
         for (Map.Entry<String, Integer> entry : quantityRepeatedWords.entrySet()) {
             System.out.println(entry.getKey() + " " + entry.getValue());
-        }
+        }*/
+
+        getRepeatedTimes1(words);
     }
 
     public static Integer getRepeatedTimes(String word, List<String> words) {
@@ -28,5 +31,22 @@ public class RepeatedWords {
             }
         }
         return counter;
+    }
+
+    public static void getRepeatedTimes1(List<String> words) {
+
+        Map<String, Integer> map = new HashMap<>();
+
+        int counter = 1;
+        for (String word : words) {
+            if (map.containsKey(word)) {
+                counter = map.get(word) + 1;
+            }
+
+            map.put(word, counter);
+        }
+
+        System.out.println(map);
+
     }
 }

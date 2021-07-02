@@ -2,11 +2,11 @@ package homeworks.basic_tasks.map.common_students;
 
 import java.util.Objects;
 
-public class Students {
+public class Student {
     private final int id;
     private final String name;
 
-    public Students(int id, String name) {
+    public Student(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -15,8 +15,8 @@ public class Students {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Students students = (Students) o;
-        return id == students.id && Objects.equals(name, students.name);
+        Student student = (Student) o;
+        return id == student.id && Objects.equals(name, student.name);
     }
 
     @Override

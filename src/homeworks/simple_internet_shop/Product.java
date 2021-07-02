@@ -10,7 +10,7 @@ public class Product {
     private String subCategory;
     private String modelName;
     private String brandName;
-    private Year year;//
+    private Year year;
     private BigDecimal price;
     private int quantityOnWH;
 

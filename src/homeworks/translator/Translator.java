@@ -36,15 +36,15 @@ public class Translator {
 
     public String translateWords(String text, String dictionaryName) {
         String[] words = text.split(REGEX);
-        String result = "";
+        StringBuilder result = new StringBuilder();
         Map<String, String> dictionary = dictionaries.get(dictionaryName);
         if (dictionary.isEmpty()) {
             return "No such dictionary";
         }
         for (String word : words) {
-            result += dictionary.get(word) + " ";
+            result.append(dictionary.get(word)).append(" ");
         }
-        return result;
+        return result.toString();
     }
 
 

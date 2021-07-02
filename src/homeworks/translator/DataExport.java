@@ -12,9 +12,6 @@ import java.util.Map;
 
 public class DataExport {
 
-    DataExport() {
-    }
-
     public static Path getPath(String stringPath) {
         return Paths.get(stringPath);
     }
