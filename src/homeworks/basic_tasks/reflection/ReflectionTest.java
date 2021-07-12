@@ -1,6 +1,6 @@
-package homeworks.reflection;
+package homeworks.basic_tasks.reflection;
 
-import homeworks.reflection.Animals.Dog;
+import homeworks.basic_tasks.reflection.Animals.Dog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -12,7 +12,7 @@ public class ReflectionTest {
     public static void main(String[] args) {
         Dog dog = new Dog("Rocky", 6);
         try {
-            Class dogClass = Class.forName("homeworks.reflection.Animals.Dog");
+            Class dogClass = Class.forName("homeworks.basic_tasks.reflection.Animals.Dog");
             printDataAboutClass(dogClass);
 
             System.out.println("Change public field out of ClassMethods");

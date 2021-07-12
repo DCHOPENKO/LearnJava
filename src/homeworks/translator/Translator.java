@@ -1,63 +1,66 @@
 package homeworks.translator;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Set;
 
 public class Translator {
     private static final String REGEX = "(([.,!?&])?\\s+)|\\b[.]";
-    private Map<String, Map<String, String>> dictionaries = new HashMap<>();
-
-    public void addDictionary(Dictionary dictionary) {
-        dictionaries.put(dictionary.getName(), dictionary.getMap());
-    }
-
-    //  < rus-eng, dictionary >
-    //  привет:hello
-    //  утро:morning
-
+    private static FileService fileService;
+    private Set<Dictionary> dictionaries;
 
     // add new dictionary
     // translate words
     // after input identify language
-    //
+    // import/export dictionaries from/to files
+
+    public Translator(String stringPath) throws IOException {
+        fileService = new FileService();
+        Path path = Paths.get(stringPath);
+        dictionaries = fileService.importDictionaries(path);
+    }
+
+    public void addDictionary(Dictionary dictionary) {
+        dictionaries.add(dictionary);
+    }
 
     public String translateWord(String word, String dictionaryName) {
-        Map<String, String> dictionary = dictionaries.get(dictionaryName);
-        return dictionary.get(word);
+        Dictionary dictionary = getDictionary(dictionaryName);
+        if (dictionary.getVocabulary().isEmpty()) {
+            return "No such dictionary";
+        }
+        return dictionary.getVocabulary().get(word);
     }
 
-    public Map<String, Map<String, String>> getDictionaries() {
-        return dictionaries;
-    }
-
-    public void setDictionaries(Map<String, Map<String, String>> dictionaries) {
-        this.dictionaries = dictionaries;
+    private Dictionary getDictionary(String dictionaryName) {
+        for (Dictionary dictionary : dictionaries) {
+            if (dictionary.getName().equals(dictionaryName)) {
+                return dictionary;
+            }
+        }
+        return new Dictionary();
     }
 
     public String translateWords(String text, String dictionaryName) {
         String[] words = text.split(REGEX);
         StringBuilder result = new StringBuilder();
-        Map<String, String> dictionary = dictionaries.get(dictionaryName);
-        if (dictionary.isEmpty()) {
-            return "No such dictionary";
-        }
         for (String word : words) {
-            result.append(dictionary.get(word)).append(" ");
+            result.append(translateWord(word, dictionaryName)).append(" ");
         }
         return result.toString();
     }
-
 
     public String getLanguage(String text) {
         String[] words = text.split(REGEX);
         String dictinaryNameFirst = "";
         String dictinaryNameSecond = "";
-        for (Map.Entry<String, Map<String, String>> entry : dictionaries.entrySet()) {
-            if (entry.getValue().containsKey(words[0])) {
-                dictinaryNameFirst = entry.getKey();
+        for (Dictionary dictionary : dictionaries) {
+            if (dictionary.getVocabulary().containsKey(words[0])) {
+                dictinaryNameFirst = dictionary.getName();
             }
-            if (entry.getValue().containsValue(words[0])) {
-                dictinaryNameSecond = entry.getKey();
+            if (dictionary.getVocabulary().containsValue(words[0])) {
+                dictinaryNameSecond = dictionary.getName();
             }
         }
         if (!dictinaryNameSecond.equals("")) {
@@ -71,5 +74,9 @@ public class Translator {
         return "Uknown language.";
     }
 
+    public void saveDictionaries(String stringPath) throws IOException {
+        Path path = Paths.get(stringPath);
+        fileService.exportAll(path, dictionaries);
+    }
 
 }

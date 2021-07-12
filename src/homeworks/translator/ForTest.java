@@ -1,27 +1,22 @@
 package homeworks.translator;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 
-public class Main {
+public class ForTest {
 
     public static void main(String[] args) throws IOException {
 
-        DataExport data = new DataExport();
-        Translator translator = new Translator();
-        Path rootPath = DataExport.getPath("Dictionaries_For_Translator");
-
-        translator.setDictionaries(data.importAll(rootPath));
+        Translator translator = new Translator("Dictionaries_For_Translator");
 
         System.out.println(translator.translateWord("утро", "rus-eng"));
         System.out.println(translator.translateWord("утро", "rus-ukr"));
 
-        Dictionary eng_rus = new Dictionary("eng-rus");
-        eng_rus.addNewWords("morning", "утро");
-        eng_rus.addNewWords("hello", "привет");
-        translator.addDictionary(eng_rus);
-        data.exportAll(rootPath, translator.getDictionaries());
+        Dictionary engRus = new Dictionary("eng-rus");
+        engRus.addNewWords("morning", "утро");
+        engRus.addNewWords("hello", "привет");
+        translator.addDictionary(engRus);
+
+        translator.saveDictionaries("Dictionaries_For_Translator");
 
         System.out.println(translator.translateWords("morning hello, hello, morning, morning.",
                 "eng-rus"));

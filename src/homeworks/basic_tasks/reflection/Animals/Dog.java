@@ -1,4 +1,4 @@
-package homeworks.reflection.Animals;
+package homeworks.basic_tasks.reflection.Animals;
 
 public class Dog extends Animal implements Eatable, Movable, Jumping {
     public String nickName;
