@@ -59,9 +59,6 @@ public class SoftServeTasks {
 class MyUtils {
 
     public Stream<String> getNameList(Map<String, Stream<String>> map) {
-        List<String> list = new LinkedList<>();
-
-        map.values().forEach(v -> list.addAll(v.collect(Collectors.toList())));
 
         Function<String, String> cleanText = s -> {
             try {
@@ -75,13 +72,16 @@ class MyUtils {
 
         Function<String, String> getFormattedText = s -> s.substring(0, 1).toUpperCase() + s.substring(1);
 
-        Stream<String> result = list.stream()
+        Collection<Stream<String>> values = map.values();
+
+       return values
+                .stream()
+                .flatMap(v -> v)
                 .map(cleanText)
                 .distinct()
                 .filter(s -> !s.isEmpty())
                 .map(getFormattedText);
 
-        return result;
     }
 
     public Map<String, Stream<String>> getSortedPhoneNumbers(List<Stream<String>> phoneList) {

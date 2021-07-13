@@ -22,9 +22,9 @@ public class CompareContent {
     }
 
     public static boolean listMapCompare() {
-        List<String> valuesList = new ArrayList<>(map.values());
+        Collection<String> values = map.values();
         //       Collections.disjoint(list, valuesList)
-        return (list.containsAll(valuesList) && valuesList.containsAll(list));
+        return list.containsAll(values) && values.containsAll(list);
     }
 
     public static boolean listMapCompare2() {
@@ -42,8 +42,7 @@ public class CompareContent {
     }
 
     public static boolean listMapCompare3() {
-        List<String> valuesList = new ArrayList<>(map.values());
-        return !Collections.disjoint(list, valuesList);
+        return !Collections.disjoint(list, map.values());
     }
 
 }

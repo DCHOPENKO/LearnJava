@@ -16,7 +16,7 @@ public class StreamApiTasks {
         people.forEach(h -> System.out.println(h));
 
         // - Вывести информацию о всех адресах.
-        Consumer<Man> consumer = h -> System.out.println(h.getAddress());
+        Consumer<Man> consumer = m -> System.out.println(m.getAddress());
 
         people.forEach(consumer);
 
@@ -53,8 +53,11 @@ public class StreamApiTasks {
 
         people
                 .stream()
-                .filter(h -> h.getAddress().getCountry().equals("Canada") && h.getAddress().getHouseNumber() == 3 ||
-                        h.getAge() >= 25)
+                .filter(h -> {
+                    Address address = h.getAddress();
+                    return address.getCountry().equals("Canada") && address.getHouseNumber() == 3 ||
+                            h.getAge() >= 25;
+                })
                 .forEach(consumer);
 
         // - Сгруппировать людей по количеству детей.

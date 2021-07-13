@@ -35,7 +35,8 @@ public class LearnStream {
                 .mapToInt(h -> h.getAge())
                 .sum());*/
 
-        Function<Human, Child> function = h -> new Child(h.getName(), h.getAge());
+//        Function<Human, Child> function = h -> new Child(h.getName(), h.getAge());
+        Function<Human, Child> function = Child::new;
 
      /*   humans.stream()
                 .map(function)
@@ -83,7 +84,7 @@ class GroupHuman {
         );
 
         Map<Integer, Map<String, List<Human>>> map = humans.stream()
-                .collect(Collectors.groupingBy(h -> h.getAge(), Collectors.groupingBy(h -> h.getName())));
+                .collect(Collectors.groupingBy(Human::getAge, Collectors.groupingBy(h -> h.getName())));
 
         class ForHuman {
             private String name;
@@ -177,6 +178,11 @@ class Child {
     public Child(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    public Child(Human human) {
+        this.name = human.getName();
+        this.age = human.getAge();
     }
 
     public String getName() {

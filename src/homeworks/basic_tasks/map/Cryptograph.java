@@ -34,6 +34,7 @@ public class Cryptograph {
         List<Integer> codedText = new ArrayList<>();
         for (char c : charArray) {
             int[] codedChar = crypto.get(c);
+
             codedText.addAll(parseToList(codedChar));
         }
         return codedText;
@@ -54,7 +55,7 @@ public class Cryptograph {
             boolean isTrue = false;
             for (int i = 0; i < codedText.size(); i++) {
                 if (element.getValue().length >= i + 1) {
-                    isTrue = (codedText.get(i) == element.getValue()[i]);
+                    isTrue = codedText.get(i) == element.getValue()[i];
                 }
             }
             if (isTrue) {

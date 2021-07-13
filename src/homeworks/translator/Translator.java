@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class Translator {
     private static final String REGEX = "(([.,!?&])?\\s+)|\\b[.]";
-    private static FileService fileService;
+    private static final FileService FILE_SERVICE = new FileService();
     private Set<Dictionary> dictionaries;
 
     // add new dictionary
@@ -16,9 +16,9 @@ public class Translator {
     // import/export dictionaries from/to files
 
     public Translator(String stringPath) throws IOException {
-        fileService = new FileService();
+
         Path path = Paths.get(stringPath);
-        dictionaries = fileService.importDictionaries(path);
+        dictionaries = FILE_SERVICE.importDictionaries(path);
     }
 
     public void addDictionary(Dictionary dictionary) {
@@ -26,16 +26,16 @@ public class Translator {
     }
 
     public String translateWord(String word, String dictionaryName) {
-        Dictionary dictionary = getDictionary(dictionaryName);
+        Dictionary dictionary = getDictionaryByName(dictionaryName);
         if (dictionary.getVocabulary().isEmpty()) {
             return "No such dictionary";
         }
         return dictionary.getVocabulary().get(word);
     }
 
-    private Dictionary getDictionary(String dictionaryName) {
+    private Dictionary getDictionaryByName(String name) {
         for (Dictionary dictionary : dictionaries) {
-            if (dictionary.getName().equals(dictionaryName)) {
+            if (dictionary.getName().equals(name)) {
                 return dictionary;
             }
         }
@@ -76,7 +76,7 @@ public class Translator {
 
     public void saveDictionaries(String stringPath) throws IOException {
         Path path = Paths.get(stringPath);
-        fileService.exportAll(path, dictionaries);
+        FILE_SERVICE.exportAll(path, dictionaries);
     }
 
 }
