@@ -1,8 +1,9 @@
 package homeworks.basic_tasks.stream_api.softserve_tasks;
 
-import java.util.*;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -100,9 +101,10 @@ class MyUtils {
     public static Predicate<Integer>  getPredicateFromSet (Set<Predicate<Integer>> predicates) {
         Predicate<Integer> result = integer -> true;
 
-        for (Predicate<Integer> predicate: predicates) {
+        /*for (Predicate<Integer> predicate: predicates) {
             result = result.and(predicate);
-        }
+        }*/
+
         return result;
     }
 
