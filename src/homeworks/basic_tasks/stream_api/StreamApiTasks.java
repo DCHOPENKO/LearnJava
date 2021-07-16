@@ -6,14 +6,13 @@ import java.util.stream.Collectors;
 
 public class StreamApiTasks {
 
-    // Сущность Man(имя, фамилия, возраст, количество детей, Адрес), Адрес(страна, город, улица, номер дома)
-    //Использовать коллекцию LinkedList. Действия для класса Адрес делать из класса Man.
 
     public static void main(String[] args) {
         List<Man> people = initSourceData();
 
+
         // - Вывести информацию о всех людях.
-        people.forEach(h -> System.out.println(h));
+        people.forEach(System.out::println);
 
         // - Вывести информацию о всех адресах.
         Consumer<Man> consumer = m -> System.out.println(m.getAddress());
@@ -44,7 +43,7 @@ public class StreamApiTasks {
         people2
                 .stream()
                 .peek(consumer)
-                .forEach(h -> System.out.println(h));
+                .forEach(System.out::println);
 
         // - Вывести firstName, lastName, nameOfStreet, когда country == 'Canada' AND numberOfHome == 3 OR age >= 25";
 
@@ -65,7 +64,7 @@ public class StreamApiTasks {
         Map<Integer, List<Man>> listMap =
                 people
                         .stream()
-                        .collect(Collectors.groupingBy(h -> h.getCountOfChildren()));
+                        .collect(Collectors.groupingBy(Man::getCountOfChildren));
 
         // - Сгруппировать людей по количеству детей и возрасту.
 
@@ -152,6 +151,10 @@ public class StreamApiTasks {
                 new Address("USA", "Los Angeles", "California street", 63)));
         return people;
     }
+
+
+
+
 }
 
 class Man {
@@ -257,3 +260,7 @@ class Address {
                 '}';
     }
 }
+
+
+
+

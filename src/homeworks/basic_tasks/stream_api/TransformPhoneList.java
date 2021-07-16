@@ -21,17 +21,13 @@ public class TransformPhoneList {
 
         Map<String, List<String>> newPhoneBook = new HashMap<>();
 
-        Function<Map.Entry<String, String>, String> function = h -> h.getKey();
+        Function<Map.Entry<String, String>, String> function = Map.Entry::getKey;
 
         phoneBook.entrySet().stream()//toMap
-                .collect(Collectors.groupingBy(v -> v.getValue()))
+                .collect(Collectors.groupingBy(Map.Entry::getValue))
                 .forEach((k, v) -> newPhoneBook.put(k, v.stream()
                         .map(function)
                         .collect(Collectors.toList())));
-
-        Map<String, Map.Entry<String, String>> collect = phoneBook.entrySet().stream()//toMap
-                .collect(Collectors.toMap(Map.Entry::getValue, Function.identity()));
-
 
         System.out.println(newPhoneBook);
     }

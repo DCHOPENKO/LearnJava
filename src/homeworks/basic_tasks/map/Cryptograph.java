@@ -3,11 +3,7 @@ package homeworks.basic_tasks.map;
 import java.util.*;
 
 public class Cryptograph {
-    private Map<Character, int[]> crypto;
-
-    Cryptograph() {
-        crypto = initCryptoSourceData();
-    }
+    private static final Map<Character, int[]> CRYPTO = initCryptoSourceData();
 
     private static Map<Character, int[]> initCryptoSourceData() {
         Map<Character, int[]> crypto = new HashMap<>();
@@ -20,7 +16,7 @@ public class Cryptograph {
         return crypto;
     }
 
-    private static List<Integer> parseToList(int[] codeArray) {
+    private List<Integer> parseToList(int[] codeArray) {
         List<Integer> codeList = new ArrayList<>();
         for (int j : codeArray) {
             codeList.add(j);
@@ -33,8 +29,7 @@ public class Cryptograph {
         char[] charArray = text.toCharArray();
         List<Integer> codedText = new ArrayList<>();
         for (char c : charArray) {
-            int[] codedChar = crypto.get(c);
-
+            int[] codedChar = CRYPTO.get(c);
             codedText.addAll(parseToList(codedChar));
         }
         return codedText;
@@ -43,15 +38,19 @@ public class Cryptograph {
     public String getDecryptText(List<Integer> codedText) {
         StringBuilder result = new StringBuilder();
         while (codedText.size() != 0) {
-            Map.Entry<Character, int[]> decryptedSymbol = getDecryptSymbol(codedText);
-            result.append(decryptedSymbol.getKey());
+
+            Character decryptedSymbol = getDecryptSymbol(codedText);
+            if (decryptedSymbol.equals(Character.MIN_VALUE)) {
+                return "Text contains not supported symbols";
+            }
+            result.append(decryptedSymbol);
             codedText = deleteDecryptSymbol(codedText, decryptedSymbol);
         }
         return result.toString();
     }
 
-    private Map.Entry<Character, int[]> getDecryptSymbol(List<Integer> codedText) {
-        for (Map.Entry<Character, int[]> element : crypto.entrySet()) {
+    private Character getDecryptSymbol(List<Integer> codedText) {
+        for (Map.Entry<Character, int[]> element : CRYPTO.entrySet()) {
             boolean isTrue = false;
             for (int i = 0; i < codedText.size(); i++) {
                 if (element.getValue().length >= i + 1) {
@@ -59,14 +58,14 @@ public class Cryptograph {
                 }
             }
             if (isTrue) {
-                return element;
+                return element.getKey();
             }
         }
-        return ((Map.Entry<Character, int[]>) Collections.EMPTY_MAP);
+        return Character.MIN_VALUE;
     }
 
-    private List<Integer> deleteDecryptSymbol(List<Integer> codedText, Map.Entry<Character, int[]> list) {
-        int[] intArray = list.getValue();
+    private List<Integer> deleteDecryptSymbol(List<Integer> codedText, Character symbol) {
+        int[] intArray = CRYPTO.get(symbol);
         Integer[] text = codedText.toArray(new Integer[0]);
         Integer[] text1 = Arrays.copyOfRange(text, intArray.length, text.length);
         return Arrays.asList(text1);
