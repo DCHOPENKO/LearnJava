@@ -1,14 +1,15 @@
 package lessons.serialization;
 
 import java.io.*;
+import java.util.Random;
 
 public class Serializator {
     public static void main(String[] args) {
         ForSerializator john = new ForSerializator("John", 23);
 
-        try (FileOutputStream fos = new FileOutputStream("Info.dat");
+        try (FileOutputStream fos = new FileOutputStream("Info.txt");
              final ObjectOutputStream oos = new ObjectOutputStream(fos);
-             FileInputStream fis = new FileInputStream("Info.dat");
+             FileInputStream fis = new FileInputStream("Info.txt");
              final ObjectInputStream ois = new ObjectInputStream(fis)) {
             oos.writeObject(john);
 

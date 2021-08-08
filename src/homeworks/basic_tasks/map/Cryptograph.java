@@ -7,12 +7,12 @@ public class Cryptograph {
 
     private static Map<Character, int[]> initCryptoSourceData() {
         Map<Character, int[]> crypto = new HashMap<>();
-        crypto.put('А', new int[]{760, 128, 350, 201});
+/*        crypto.put('А', new int[]{760, 128, 350, 201});
         crypto.put('Б', new int[]{101});
         crypto.put('В', new int[]{210, 106});
         crypto.put('Г', new int[]{351});
         crypto.put('Д', new int[]{129});
-        crypto.put(' ', new int[]{760, 769, 758, 801, 849});
+        crypto.put(' ', new int[]{760, 769, 758, 801, 849});*/
         return crypto;
     }
 
