@@ -24,7 +24,7 @@ public class AdvertisingAgency implements Serializable {
     /** String path for parent directory where will be created directories for Place instances */
     private static final String ROOT_PATH_STRING = "board";
 
-    /** List with Placc instances which created by object AdvertisingAgency */
+    /** List with Place instances which created by object AdvertisingAgency */
     private List<Place> places;
 
     /**
@@ -35,7 +35,7 @@ public class AdvertisingAgency implements Serializable {
     AdvertisingAgency() {
         places = new ArrayList<>();
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 5; i++) {//IntStream, move to separate method
             Path path = Paths.get(ROOT_PATH_STRING, "place_" + i);
             while (true) {
                 Browser browser = Browser.values()[RANDOM.nextInt(5)];
@@ -56,7 +56,7 @@ public class AdvertisingAgency implements Serializable {
      *
      * @param systemType - selected Operation System type from enum list
      * @param browser - selected Browser type from enum list
-     * @return  boolean value  if selected params are suitable or no
+     * @return boolean value  if selected params are suitable or no
      */
     private boolean verifyBrowserAndSystem(Browser browser, SystemType systemType) {
         return (browser.equals(Browser.SAFARI) && systemType.equals(SystemType.MACOS)) ||

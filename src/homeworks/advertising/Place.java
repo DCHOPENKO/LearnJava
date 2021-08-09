@@ -3,10 +3,7 @@ package homeworks.advertising;
 import homeworks.advertising.enums.Browser;
 import homeworks.advertising.enums.SystemType;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,10 +19,10 @@ class Place implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** path information in String format for directory place for object Place */
-    private String stringPath;
+    private String path;
 
     /** enum with System Type information  */
-    private SystemType systemType;
+    private SystemType type;
 
     /** enum with Browser Type information  */
     private Browser browser;
@@ -45,15 +42,16 @@ class Place implements Serializable {
      * @param browser - selected Browser type from enum list
      */
     Place(Path placePath, SystemType systemType, Browser browser) {
-        stringPath = placePath.toAbsolutePath().toString();
-        this.systemType = systemType;
+        path = placePath.toAbsolutePath().toString();
+        this.type = systemType;
         this.browser = browser;
         try {
             Files.createDirectory(placePath);
+            serializePlaceData();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        serializePlaceData();
+
     }
 
     /**
@@ -64,7 +62,7 @@ class Place implements Serializable {
     public void createNewScreen(Integer screenPosition) {
         try {
             Files.createFile(Paths.get
-                    (stringPath, "screen".concat(Integer.toString(screenPosition)).concat(".txt")));
+                    (path, "screen".concat(Integer.toString(screenPosition)).concat(".txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,13 +81,11 @@ class Place implements Serializable {
     /**
      * Serialize object to external file info.dat
      */
-    public void serializePlaceData() {
+    public void serializePlaceData() throws IOException {
         try (FileOutputStream fos = new FileOutputStream(
-                Paths.get(stringPath, "info.dat").toAbsolutePath().toString());
+                Paths.get(path, "info.dat").toAbsolutePath().toString());
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(this);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -97,24 +93,24 @@ class Place implements Serializable {
      * Getter for param StringPath
      * @return  path in String format
      */
-    public String getStringPath() {
-        return stringPath;
+    public String getPath() {
+        return path;
     }
 
     /**
      * Getter for param SystemType
      * @return  SystemType value in enum format
      */
-    public SystemType getSystemType() {
-        return systemType;
+    public SystemType getType() {
+        return type;
     }
 
     /**
      * Setter for param SystemType
-     * @param systemType - selected Operation System type from enum list
+     * @param type - selected Operation System type from enum list
      */
-    public void setSystemType(SystemType systemType) {
-        this.systemType = systemType;
+    public void setType(SystemType type) {
+        this.type = type;
     }
 
     /**

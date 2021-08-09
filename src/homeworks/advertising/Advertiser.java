@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 /**
  * This class realize instances for class Advertiser,
  * Get file with places data (deserialized data from Advertising agency activities).
- *
+ * <p>
  * Working with got places (add content to screens, create new screens, create new places, change content in screens,
  * change configuration in place instances, delete places
  *
@@ -30,13 +30,19 @@ import java.util.stream.Stream;
 
 public class Advertiser {
 
-    /** String path for parent directory where will located directories for Place instances */
+    /**
+     * String path for parent directory where will located directories for Place instances
+     */
     private final String ROOT_PATH_STRING = "board";
 
-    /** List with Place instances*/
+    /**
+     * List with Place instances
+     */
     private List<Place> places;
 
-    /** List with Place instances paths*/
+    /**
+     * List with Place instances paths
+     */
     private List<Path> paths;
 
     /**
@@ -52,7 +58,7 @@ public class Advertiser {
      * Deserialize object data for Place instance by current path
      *
      * @param path - directory path where located serialized file with object data
-     * @return  Place instance with deserialized data
+     * @return Place instance with deserialized data
      */
     private Place getPlaceData(Path path) {
         try (FileInputStream fis = new FileInputStream(
@@ -68,7 +74,6 @@ public class Advertiser {
     /**
      * Check all Place directories in parent directory and deserialize all Place instances
      * Add Place instances to Place list.
-     *
      */
     private void getAllPlacesData() {
         places = new ArrayList<>();
@@ -88,7 +93,7 @@ public class Advertiser {
      * Find Place instance by the requested parameters (Browser, SystemType)
      * In the found instances, it places advertisements on screens
      *
-     * @param config - instance with 2 parameters (Browser and System type)
+     * @param config  - instance with 2 parameters (Browser and System type)
      * @param content - instance with 1 parameters (String newContent). Use Content class constructor with 1 parameter
      */
     public void addContentToScreenForFixedSystemAndBrowser(Configuration config, Content content) {
@@ -106,14 +111,14 @@ public class Advertiser {
      * Method is internal service, support for method - "addContentToScreenForFixedSystemAndBrowser"
      *
      * @param config - instance with 2 parameters (Browser and System type)
-     * @return  Stream with Place instances String paths
+     * @return Stream with Place instances String paths
      */
     private Stream<String> getPlacesStringPathsForFixedSystemAndBrowser(Configuration config) {
         getAllPlacesData();
         return places.stream()
                 .filter(p -> p.getBrowser().equals(config.getBrowser()))
-                .filter(p -> p.getSystemType().equals(config.getSystemType()))
-                .map(Place::getStringPath);
+                .filter(p -> p.getType().equals(config.getSystemType()))
+                .map(Place::getPath);
     }
 
     /**
@@ -121,16 +126,16 @@ public class Advertiser {
      * content to new
      *
      * @param placeName - short name for Place instance. Format is  "place_X"  X - index value
-     * @param content - instance with 2 parameters (String existingContent, String newContent).
+     * @param content   - instance with 2 parameters (String existingContent, String newContent).
      *                  Use Content class constructor with 2 parameters
      */
     public void changeContentForFixedPlaceAndAdviseContent(String placeName, Content content) {
         getAllPlacesData();
         places.stream()
-                .filter(p -> p.getStringPath().contains(placeName))
+                .filter(p -> p.getPath().contains(placeName))
                 .forEach(p -> {
                     try {
-                        Files.walkFileTree(Paths.get(p.getStringPath()), new ChangeContentVisitor(content));
+                        Files.walkFileTree(Paths.get(p.getPath()), new ChangeContentVisitor(content));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -145,7 +150,7 @@ public class Advertiser {
      */
     public void createNewPlace(Configuration config) {
         getAllPlacesData();
-        String stringPath = places.get(places.size() - 1).getStringPath();
+        String stringPath = places.get(places.size() - 1).getPath();
         String[] s = stringPath.split("_");
         int index = places.size() + 1;
         new Place(Paths.get(stringPath.replace(s[1], Integer.toString(index))), config.getSystemType(),
@@ -160,10 +165,10 @@ public class Advertiser {
     public void deletePlaceWithContent(String placeName) {
         getAllPlacesData();
         places.stream()
-                .filter(s -> s.getStringPath().contains(placeName))
+                .filter(s -> s.getPath().contains(placeName))
                 .forEach(s -> {
                     try {
-                        Files.walkFileTree(Paths.get(s.getStringPath()), new DeleteVisitor());
+                        Files.walkFileTree(Paths.get(s.getPath()), new DeleteVisitor());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -177,24 +182,29 @@ public class Advertiser {
      *
      * @param placeName - short name for Place instance. Format is  "place_X"  X - index value
      */
-    public void createNewScreen(String placeName) {
+    public void createNewScreen(String placeName) throws IOException {
         getAllPlacesData();
-        List<String> placePaths = places.stream()
-                .filter(p -> p.getStringPath().contains(placeName))
+        final String path = places.stream()
+                .filter(p -> p.getPath().contains(placeName))
+                .findFirst().get().getPath();
+
+        final long size = Files.size(Paths.get(path));
+/*
+        List<Path> placePaths = path
                 .flatMap(p -> {
                     try {
-                        return Files.list(Paths.get(p.getStringPath()));
+                        return Files.list(Paths.get(p.getPath()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     return Stream.of(Paths.get(ROOT_PATH_STRING));
                 })
-                .map(p -> p.toAbsolutePath().toString())
                 .collect(Collectors.toList());
         List<Place> placeInList = places.stream()
-                .filter(p -> p.getStringPath().contains(placeName))
+                .filter(p -> p.getPath().contains(placeName))
                 .collect(Collectors.toList());
-        placeInList.get(0).createNewScreen(placePaths.size());
+        placeInList.get(0).createNewScreen(placePaths.size());*/
+
     }
 
     /**
@@ -203,17 +213,17 @@ public class Advertiser {
      * Place instance
      *
      * @param placeName - short name for Place instance. Format is  "place_X"  X - index value
-     * @param config - instance with 2 parameters (Browser and System type). To which parameters need to switch Place
-     *               configuration data.
+     * @param config    - instance with 2 parameters (Browser and System type). To which parameters need to switch Place
+     *                  configuration data.
      */
     public void changePlaceSettings(String placeName, Configuration config) {
         getAllPlacesData();
         places.stream()
-                .filter(p -> p.getStringPath().contains(placeName))
+                .filter(p -> p.getPath().contains(placeName))
                 .forEach(p -> {
                     try {
-                        Files.walkFileTree(Paths.get(p.getStringPath()), new ClearContentVisitor());
-                        p.setSystemType(config.getSystemType());
+                        Files.walkFileTree(Paths.get(p.getPath()), new ClearContentVisitor());
+                        p.setType(config.getSystemType());
                         p.setBrowser(config.getBrowser());
                     } catch (IOException e) {
                         e.printStackTrace();
