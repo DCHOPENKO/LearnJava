@@ -1,0 +1,3 @@
+01)  patterrns (tasks)  builder, decorator, iterator, strategy, templates
+02) make SQL request builder
+03) learn about Proxy, Object Pool;
