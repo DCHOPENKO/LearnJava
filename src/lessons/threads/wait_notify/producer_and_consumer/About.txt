@@ -1,0 +1,5 @@
+1) Producer thread produce a new resource in every 1 second and put it in ‘taskQueue’.
+2) Consumer thread takes 1 seconds to process consumed resource from ‘taskQueue’.
+3) Max capacity of taskQueue is 5 i.e. maximum 5 resources can exist inside ‘taskQueue’
+at any given time.
+4) Both threads run infinitely.

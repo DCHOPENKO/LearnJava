@@ -15,7 +15,7 @@ public class Pizza {
     }
 
     public static class PizzaBuilder {
-        Pizza pizza;
+        private Pizza pizza;
 
         PizzaBuilder() {
             pizza = new Pizza();
