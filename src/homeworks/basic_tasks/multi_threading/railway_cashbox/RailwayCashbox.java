@@ -11,7 +11,6 @@ public class RailwayCashbox {
         tickets = new HashSet<>();
     }
 
-
     public void addNewTicket(Ticket ticket) {
         tickets.add(ticket);
     }
@@ -19,7 +18,6 @@ public class RailwayCashbox {
     public void removeTicket(Ticket ticket) {
         tickets.remove(ticket);
     }
-
 
     public Set<Ticket> getTickets() {
         return tickets;

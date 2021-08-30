@@ -42,9 +42,10 @@ public class ThreadReader extends Thread {
                         .filter(s -> s.equals(WORD))
                         .count();
             }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         timeLive = System.currentTimeMillis() - start;
+        System.out.println(shortName + "  " + timeLive);
     }
 }

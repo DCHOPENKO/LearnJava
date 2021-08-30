@@ -32,12 +32,20 @@ public class Buyer implements Runnable {
         synchronized (tickets) {
             while (tickets.stream()
                     .noneMatch(t -> t.equals(ticket))) {
-                System.out.println("Áèëåò " + ticket + " ïğîäàí");
+                System.out.println("Ğ‘Ğ¸Ğ»ĞµÑ‚ " + ticket + " Ğ¿Ñ€Ğ¾Ğ´Ğ°Ğ½");
                 tickets.wait();
             }
             cashbox.removeTicket(ticket);
-            System.out.println("Áèëåò " + ticket + " êóïëåí, ïîêóïàòåëü " + name);
+            System.out.println("Ğ‘Ğ¸Ğ»ĞµÑ‚ " + ticket + " ĞºÑƒĞ¿Ğ»ĞµĞ½, Ğ¿Ğ¾ĞºÑƒĞ¿Ğ°Ñ‚ĞµĞ»ÑŒ " + name);
             isTrue = false;
         }
     }
 }
+
+/*
+*
+* boolean isExist = false;
+*
+* for() -> true
+*
+* */

@@ -1,29 +1,34 @@
 package homeworks.basic_tasks.multi_threading.factory;
 
+import homeworks.basic_tasks.multi_threading.factory.production_phases.Phase;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductionLine extends Thread {
     private static final String PARENT_FOLDER = "factory_products";
     private static final String SEPARATOR = "_";
     private static final String FILE_EXTENSION = ".txt";
-    private final String productName;
-    private final List<String> workers;
-    private final Factory factory;
+    private static final String TEXT_BEFORE_PHASE_INFO = "Current phase is ";
+    private static final String PRODUCED_PRODUCT = "Production Finished. Product is ready";
+    private final String PRODUCT_NAME;
+    private final List<String> WORKERS;
+    private final List<Phase> PHASES;
     private String workerName;
     private String productionStatus;
     private Path path;
     private boolean isProductionStart;
 
     ProductionLine(String productName, Factory factory) {
-        this.productName = productName;
-        this.factory = factory;
-        workers = factory.getFreeWorkers();
+        this.PRODUCT_NAME = productName;
+        WORKERS = factory.getFreeWorkers();
         isProductionStart = false;
+        PHASES = new ArrayList<>();
         this.start();
     }
 
@@ -32,28 +37,32 @@ public class ProductionLine extends Thread {
         try {
             setWorker();
             path = Paths.get(PARENT_FOLDER,
-                    productName.concat(SEPARATOR).concat(workerName).concat(FILE_EXTENSION));
+                    PRODUCT_NAME.concat(SEPARATOR).concat(workerName).concat(FILE_EXTENSION));
             Files.createFile(path);
             isProductionStart = true;
-            setProductionPhase(ProductionPhase.SURVEY, 3);
-            setProductionPhase(ProductionPhase.DESIGN, 3);
-            setProductionPhase(ProductionPhase.DEVELOP, 6);
-            setProductionPhase(ProductionPhase.TEST, 3);
-            setProductionPhase(ProductionPhase.FINISHED, 0);
+            for (Phase phase : PHASES) {
+                executeProductionPhase(phase);
+            }
+            addDataToLogFile(PRODUCED_PRODUCT);
             isProductionStart = false;
-            synchronized (workers) {
-                workers.add(workerName);
-                workers.notifyAll();
+            synchronized (WORKERS) {
+                WORKERS.add(workerName);
+                WORKERS.notifyAll();
             }
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void setProductionPhase(ProductionPhase phase, int seconds) throws IOException {
-        productionStatus = phase.getShortDescription();
-        addDataToLogFile(productionStatus);
-        spendTimeForProductionCycle(seconds);
+    public ProductionLine addProductionPhase(Phase phase) {
+        PHASES.add(phase);
+        return this;
+    }
+
+    private void executeProductionPhase(Phase phase) throws IOException {
+        productionStatus = phase.getPhaseName();
+        addDataToLogFile(TEXT_BEFORE_PHASE_INFO.concat(productionStatus));
+        spendTimeForProductionCycle(phase.getProducedTime());
     }
 
     private void addDataToLogFile(String status) throws IOException {
@@ -71,13 +80,13 @@ public class ProductionLine extends Thread {
     }
 
     private void setWorker() throws InterruptedException {
-        synchronized (workers) {
-            while (workers.isEmpty()) {
+        synchronized (WORKERS) {
+            while (WORKERS.isEmpty()) {
                 productionStatus = "All workers busy. Waiting while somebody will be released (not started)";
-                workers.wait();
+                WORKERS.wait();
             }
-            workerName = workers.get(0);
-            workers.remove(0);
+            workerName = WORKERS.get(0);
+            WORKERS.remove(0);
         }
     }
 

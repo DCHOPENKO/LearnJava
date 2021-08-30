@@ -23,7 +23,7 @@ public class Returner implements Runnable {
     private void returnTicket() {
         synchronized (tickets) {
             cashbox.addNewTicket(ticket);
-            System.out.println("Билет " + ticket + " сдан, сдаал билет " + name);
+            System.out.println("Р‘РёР»РµС‚ " + ticket + " СЃРґР°РЅ, СЃРґР°РІР°Р» Р±РёР»РµС‚ " + name);
             tickets.notifyAll();
         }
     }

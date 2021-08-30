@@ -6,7 +6,6 @@ public class Ticket {
     private final String departCityName;
     private final String arrivalCityName;
 
-
     Ticket(String departCityName, String arrivalCityName) {
         this.departCityName = departCityName;
         this.arrivalCityName = arrivalCityName;
