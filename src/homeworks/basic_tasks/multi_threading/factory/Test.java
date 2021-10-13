@@ -1,3 +1,4 @@
+/*
 package homeworks.basic_tasks.multi_threading.factory;
 
 import homeworks.basic_tasks.multi_threading.factory.production_phases.Design;
@@ -45,3 +46,4 @@ public class Test {
     }
 
 }
+*/

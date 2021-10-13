@@ -1,7 +1,5 @@
 package lessons.regex;
 
-import sun.dc.path.PathError;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
