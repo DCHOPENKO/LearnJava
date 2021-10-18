@@ -4,18 +4,20 @@ import homeworks.jdbc.service.CRUDService;
 import homeworks.jdbc.service.impl.DriverServiceImpl;
 import homeworks.jdbc.service.impl.TruckServiceImpl;
 
+import java.sql.SQLException;
+
 public class TestJdbc {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         CRUDService<Driver> driverService = new DriverServiceImpl();
         CRUDService<Truck> truckService = new TruckServiceImpl();
 
-        truckService.save(Truck.set()
+       truckService.save(new Truck.TruckBuilder()
                 .setModel("test")
                 .setModelYear(2012)
                 .setFkDriver(4)
                 .build());
 
-        truckService.update(Truck.set()
+        truckService.update(new Truck.TruckBuilder()
                 .setTruckid(11)
                 .setModel("test2")
                 .setModelYear(2012)
@@ -30,14 +32,14 @@ public class TestJdbc {
         var trucks = truckService.findAll();
         trucks.forEach(System.out::println);
 
-        driverService.save(Driver.set()
+        driverService.save(new Driver.DriverBuilder()
                 .setFirstName("Test")
                 .setLastName("Testov")
                 .setAge(44)
                 .setQualification(Qualification.FRESH)
                 .build());
 
-        driverService.update(Driver.set()
+        driverService.update(new Driver.DriverBuilder()
                 .setDriverId(5)
                 .setFirstName("Test")
                 .setLastName("Testov")

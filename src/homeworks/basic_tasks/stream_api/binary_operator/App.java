@@ -1,8 +1,10 @@
 package homeworks.basic_tasks.stream_api.binary_operator;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
     /*    d) We have class Person {
@@ -23,6 +25,18 @@ public class App {
         return persons.stream()
                 .map(function)
                 .collect(Collectors.toList());
+
+
+    }
+
+    public static Predicate<Integer> getPredicateFromSet(Set<Predicate<Integer>> predicates) {
+
+        BinaryOperator<Predicate<Integer>> operator = Predicate::and;
+
+        return predicates
+                .stream()
+                .reduce(operator)
+                .get();
     }
 
 

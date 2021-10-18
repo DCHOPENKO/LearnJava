@@ -10,13 +10,13 @@ public class Driver {
     private String lastName;
     private int age;
     private Qualification qualification;
-    private List<Truck> truckList;
+    private List<Truck> trucks;
 
     private Driver() {
-        truckList = new ArrayList<>();
+        trucks = new ArrayList<>();
     }
 
-    public static DriverBuilder set() {
+    public static DriverBuilder builder() {
         return new DriverBuilder();
     }
 
@@ -41,7 +41,7 @@ public class Driver {
     }
 
     public void addTruckToList(Truck truck) {
-        truckList.add(truck);
+        trucks.add(truck);
     }
 
     @Override
@@ -52,14 +52,14 @@ public class Driver {
                ", lastName='" + lastName + '\'' +
                ", age=" + age +
                ", qualification=" + qualification +
-               ", truckList=" + truckList +
+               ", truckList=" + trucks +
                '}';
     }
 
     public static class DriverBuilder {
         private Driver driver;
 
-        DriverBuilder() {
+        public DriverBuilder() {
             driver = new Driver();
         }
 

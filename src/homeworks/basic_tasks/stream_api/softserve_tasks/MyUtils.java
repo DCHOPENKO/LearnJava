@@ -101,9 +101,9 @@ class MyUtils {
     public static Predicate<Integer>  getPredicateFromSet (Set<Predicate<Integer>> predicates) {
         Predicate<Integer> result = integer -> true;
 
-        /*for (Predicate<Integer> predicate: predicates) {
+        for (Predicate<Integer> predicate: predicates) {
             result = result.and(predicate);
-        }*/
+        }
 
         return result;
     }

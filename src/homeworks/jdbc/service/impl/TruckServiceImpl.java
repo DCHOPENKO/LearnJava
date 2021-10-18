@@ -12,122 +12,96 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TruckServiceImpl implements CRUDService<Truck> {
-    private String sql;
-
+    private static final String INSERT_QUERY = """
+            INSERT INTO truck (model, model_Year, FK_driver)
+            VALUES
+            (?, ?, ?);
+            """;
+    private static final String UPDATE_QUERY = """
+            UPDATE truck
+            SET model = ?, model_Year = ?, FK_driver = ?
+            WHERE truck_id = ?;
+            """;
+    private static final String DELETE_QUERY = """
+            DELETE FROM truck
+            WHERE truck_id = ?;
+            """;
+    private static final String SELECT_BY_ID_QUERY = """
+            SELECT * FROM truck
+            WHERE truck_id = ?;
+            """;
+    private static final String SELECT_ALL_QUERY = """
+            SELECT * FROM truck
+            """;
+    private static final String TRUCK_ID_COLUMN_NAME = "truck_id";
+    private static final String MODEL_COLUMN_NAME = "model";
+    private static final String MODEL_YEAR_COLUMN_NAME = "model_year";
+    private static final String FK_DRIVER_COLUMN_NAME = "FK_driver";
+    private static final String MESSAGE_SUCCESSFULLY_INSERT = "New truck added to DB";
+    private static final String MESSAGE_SUCCESSFULLY_UPDATE = "Existing truck data was updated successfully";
+    private static final String MESSAGE_SUCCESSFULLY_DELETE = "Truck deleted successfully with index ";
 
     @Override
-    public void save(Truck truck) {
-        sql = """
-                INSERT INTO truck (model, model_Year, FK_driver)
-                VALUES
-                (?, ?, ?);
-                """;
-
-        try (PreparedStatement preparedStatement = ConnectionManager.getConnection().prepareStatement(sql)) {
-
-            preparedStatement.setString(1, truck.getModel());
-            preparedStatement.setInt(2, truck.getModelYear());
-            preparedStatement.setInt(3, truck.getFkDriver());
-
-            printActionResult(preparedStatement.executeUpdate(),
-                    "New truck added to DB");
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
+    public void save(Truck truck) throws SQLException {
+        PreparedStatement preparedStatement = ConnectionManager.getConnection().prepareStatement(INSERT_QUERY);
+        preparedStatement.setString(1, truck.getModel());
+        preparedStatement.setInt(2, truck.getModelYear());
+        preparedStatement.setInt(3, truck.getFkDriver());
+        printActionResult(preparedStatement.executeUpdate(), MESSAGE_SUCCESSFULLY_INSERT);
+        preparedStatement.close();
     }
 
     @Override
-    public void update(Truck truck) {
-        sql = """
-                UPDATE truck
-                SET model = ?, model_Year = ?, FK_driver = ?
-                WHERE truck_id = ?;
-                """;
-
-        try (PreparedStatement preparedStatement = ConnectionManager.getConnection().prepareStatement(sql)) {
-
-            preparedStatement.setString(1, truck.getModel());
-            preparedStatement.setInt(2, truck.getModelYear());
-            preparedStatement.setInt(3, truck.getFkDriver());
-            preparedStatement.setInt(4, truck.getTruckId());
-
-            printActionResult(preparedStatement.executeUpdate(),
-                    "Existing truck data was updated successfully");
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
-    }
-
-
-    @Override
-    public void deleteById(int id) {
-        sql = """
-                DELETE FROM truck
-                WHERE truck_id = ?;
-                """;
-
-        try (PreparedStatement preparedStatement = ConnectionManager.getConnection().prepareStatement(sql)) {
-
-            preparedStatement.setInt(1, id);
-
-            printActionResult(preparedStatement.executeUpdate(),
-                    "Truck with index " + id + " deleted successfully");
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
+    public void update(Truck truck) throws SQLException {
+        PreparedStatement preparedStatement = ConnectionManager.getConnection().prepareStatement(UPDATE_QUERY);
+        preparedStatement.setString(1, truck.getModel());
+        preparedStatement.setInt(2, truck.getModelYear());
+        preparedStatement.setInt(3, truck.getFkDriver());
+        preparedStatement.setInt(4, truck.getTruckId());
+        printActionResult(preparedStatement.executeUpdate(), MESSAGE_SUCCESSFULLY_UPDATE);
+        preparedStatement.close();
     }
 
     @Override
-    public Truck findById(int id) {
-        sql = """
-                SELECT * FROM truck
-                WHERE truck_id = ?;
-                """;
+    public void deleteById(int id) throws SQLException {
+        PreparedStatement preparedStatement = ConnectionManager.getConnection().prepareStatement(DELETE_QUERY);
+        preparedStatement.setInt(1, id);
+        printActionResult(preparedStatement.executeUpdate(),
+                MESSAGE_SUCCESSFULLY_DELETE + id);
+        preparedStatement.close();
+    }
 
+    @Override
+    public Truck findById(int id) throws SQLException {
         Truck truck = null;
-        try (PreparedStatement preparedStatement = ConnectionManager.getConnection().prepareStatement(sql)) {
-
-            preparedStatement.setInt(1, id);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                truck = getTruckFromDB(resultSet);
-            }
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        PreparedStatement preparedStatement = ConnectionManager.getConnection().prepareStatement(SELECT_BY_ID_QUERY);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            truck = getTruckFromResultSet(resultSet);
         }
+        preparedStatement.close();
         return truck;
     }
 
     @Override
-    public List<Truck> findAll() {
+    public List<Truck> findAll() throws SQLException {
         List<Truck> trucks = new ArrayList<>();
-
-        sql = "SELECT * FROM truck";
-
-        try (Statement statement = ConnectionManager.getConnection().createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)
-        ) {
-            while (resultSet.next()) {
-                trucks.add(getTruckFromDB(resultSet));
-            }
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        Statement statement = ConnectionManager.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(SELECT_ALL_QUERY);
+        while (resultSet.next()) {
+            trucks.add(getTruckFromResultSet(resultSet));
         }
+        statement.close();
         return trucks;
     }
 
-    private Truck getTruckFromDB(ResultSet resultSet) throws SQLException {
-        return Truck.set()
-                .setTruckid(resultSet.getInt("truck_id"))
-                .setModel(resultSet.getString("model"))
-                .setModelYear(resultSet.getInt("model_year"))
-                .setFkDriver(resultSet.getInt("FK_driver"))
+    private Truck getTruckFromResultSet(ResultSet resultSet) throws SQLException {
+        return new Truck.TruckBuilder()
+                .setTruckid(resultSet.getInt(TRUCK_ID_COLUMN_NAME))
+                .setModel(resultSet.getString(MODEL_COLUMN_NAME))
+                .setModelYear(resultSet.getInt(MODEL_YEAR_COLUMN_NAME))
+                .setFkDriver(resultSet.getInt(FK_DRIVER_COLUMN_NAME))
                 .build();
     }
 }

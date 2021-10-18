@@ -9,7 +9,7 @@ public class Truck {
     private Truck() {
     }
 
-    public static TruckBuilder set() {
+    public static TruckBuilder builder() {
         return new TruckBuilder();
     }
 
@@ -35,14 +35,13 @@ public class Truck {
                "truckId=" + truckId +
                ", model='" + model + '\'' +
                ", modelYear=" + modelYear +
-               ", fkDriver=" + fkDriver +
                '}';
     }
 
     public static class TruckBuilder {
         private Truck truck;
 
-        TruckBuilder() {
+        public TruckBuilder() {
             truck = new Truck();
         }
 
